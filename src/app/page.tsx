@@ -5,8 +5,8 @@ import { Hero } from "app/Components/home/Hero";
 export default function Home() {
   return (
     <main>
-      <Hero />
-      <Description />
+      {/* <Hero /> */}
+      {/* <Description /> */}
       <MainProducts />
     </main>
   );
