@@ -1,8 +1,5 @@
 import { env } from "app/config/env";
 import { shopifyUrls } from "./urls";
-import { title } from "process";
-
-export { shopifyUrls } from "./urls";
 
 export const getCollections = async () => {
   try {
@@ -12,14 +9,28 @@ export const getCollections = async () => {
       }),
     });
     const { smart_collections } = await response.json();
-    const transformdCollections = smart_collections.map((collection: any) => {
+    const transformedCollections = smart_collections.map((collection: any) => {
       return {
         id: collection.id,
         title: collection.title,
         handle: collection.handle,
       };
     });
-    return transformdCollections;
+    return transformedCollections;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getCollectionProducts = async (id: string) => {
+  try {
+    const response = await fetch(shopifyUrls.collections.products(id), {
+      headers: new Headers({
+        "X-Shopify-Access-Token": env.SHOPIFY_TOKEN,
+      }),
+    });
+    const { products } = await response.json();
+    return products;
   } catch (error) {
     console.log(error);
   }
