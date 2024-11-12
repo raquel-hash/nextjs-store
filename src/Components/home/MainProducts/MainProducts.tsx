@@ -1,23 +1,7 @@
 // "use client";
 import Image from "next/image";
 import styles from "./MainProducts.module.sass";
-
-const getProducts = async () => {
-  try {
-    const response = await fetch(
-      `${process.env.SHOPIFY_HOSTNAME}/admin/api/2024-10/products.json`,
-      {
-        headers: new Headers({
-          "X-Shopify-Access-Token": process.env.SHOPIFY_API_KEY || "",
-        }),
-      }
-    );
-    const { products } = await response.json();
-    return products;
-  } catch (error) {
-    console.log(error);
-  }
-};
+import { getProducts } from "app/services/shopify";
 
 export const MainProducts = async () => {
   // console.log("variable de entorno", process.env.NEXT_PUBLIC_SHOPIFY_HOSTNAME);
