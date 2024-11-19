@@ -1,16 +1,18 @@
-// interface ProductPageProps {
-//     searchParams: {
-//         id: string
-//     }
-// }
-"use client";
+import { ProductView } from "app/Components/product/ProductView";
+import { getProducts } from "app/services/shopify/products";
 
-import { useParams, useSearchParams } from "next/navigation";
+interface ProductPageProps {
+  searchParams: {
+    id: string;
+  };
+}
 
-export default function ProductPage() {
-  const params = useParams();
-  const searchParams = useSearchParams();
+export default async function ProductPage({ searchParams }: ProductPageProps) {
+  const id = searchParams.id;
+  console.log(id, "id");
+  const products = await getProducts(id);
+  console.log(products);
+  const product = products[0];
 
-  const id = searchParams.get("id");
-  return <h1>Product Page</h1>;
+  return <ProductView product={product} />;
 }
