@@ -1,8 +1,6 @@
 import { env } from "app/config/env";
 import { shopifyUrls } from "./urls";
 
-export { shopifyUrls } from "./urls";
-
 export const getProducts = async (id?: string): Promise<ProductType[]> => {
   try {
     const apiUrl = id
@@ -14,14 +12,15 @@ export const getProducts = async (id?: string): Promise<ProductType[]> => {
       }),
     });
     const { products } = await response.json();
+
     const transformedProducts = products.map((product: any) => {
       return {
         id: product.id,
         gql_id: product.variants[0].admin_graphql_api_id,
         title: product.title,
-        description: product.body.html,
+        description: product.body_html,
         price: product.variants[0].price,
-        image: product.variants[0].src,
+        image: product.images[0].src,
         quantity: product.variants[0].inventory_quantity,
         handle: product.handle,
         tags: product.tags,
@@ -31,4 +30,21 @@ export const getProducts = async (id?: string): Promise<ProductType[]> => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const getMainProducts = async () => {
+  const response = await fetch(shopifyUrls.products.mainProducts, {
+    headers: new Headers({
+      "X-Shopify-Access-Token": env.SHOPIFY_TOKEN,
+    }),
+    // cache: "force-cache",
+    // next: {
+    //   revalidate: 10, // in seconds
+    // },
+    cache: "no-cache",
+  });
+
+  const { products } = await response.json();
+
+  return products;
 };
