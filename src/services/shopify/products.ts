@@ -41,7 +41,11 @@ export const getMainProducts = async () => {
     // next: {
     //   revalidate: 10, // in seconds
     // },
-    cache: "no-cache",
+    // cache: "no-cache",
+    cache: "force-cache",
+    next: {
+      tags: ["main-products"],
+    },
   });
 
   const { products } = await response.json();
